@@ -14,7 +14,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.storage.StorageManager;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +36,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        File photo = createImageFile();
+
+        Log.v("space", "space is " + querySpace());
+        Log.v("yaaa", "directory");
+
         ActivityResultLauncher<Uri> mTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
+            Log.v("image", "size: " + photo.length());
+            //testDirectory();
             return;
         });
         ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
@@ -43,9 +53,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        File photo = createImageFile();
-        Uri photo_uri = FileProvider.getUriForFile(getApplicationContext(), "com.example.android.fileprovider", photo);
 
+        Uri photo_uri = FileProvider.getUriForFile(getApplicationContext(), "com.example.record_receipts", photo);
+        Log.v("image", "toString" + photo_uri.toString());
+        Log.v("image", "getPath" + photo_uri.getPath());
         Button take_photo = findViewById(R.id.activity_main_take_button);
         take_photo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -63,20 +74,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private File createImageFile(){
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = null;
+        File imagePath = new File(getApplicationContext().getFilesDir(), "temp");
+        File image = new File(imagePath, imageFileName+".jpg");
+        //File image = null;
+        //image = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), imageFileName);
+        currentPhotoPath = image.getAbsolutePath();
+        Log.v("image", currentPhotoPath);
+        return image;
+    }
+
+    private long querySpace() {
+        long availableBytes =0;
+        StorageManager storageManager =
+                getApplicationContext().getSystemService(StorageManager.class);
+        UUID appSpecificInternalDirUuid = null;
         try {
-            image = File.createTempFile(imageFileName, ".jpg", storageDir);
+            appSpecificInternalDirUuid = storageManager.getUuidForPath(getFilesDir());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+            availableBytes =
+                    storageManager.getAllocatableBytes(appSpecificInternalDirUuid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return availableBytes;
+    }
 
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
+    private void testDirectory(){
+        String imagePath = new File(getApplicationContext().getFilesDir(), "temp").toString();
+        Log.d("Files", "Path: " + imagePath);
+        File directory = new File(imagePath);
+        File[] files = directory.listFiles();
+        Log.d("Files", "Size: "+ files.length);
+        for (int i = 0; i < files.length; i++)
+        {
+            Log.d("Files", "FileName:" + files[i].getName());
+        }
     }
 
         }
