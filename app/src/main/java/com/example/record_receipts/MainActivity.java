@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,6 +23,7 @@ import android.widget.Button;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Permission;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -41,17 +43,23 @@ public class MainActivity extends AppCompatActivity {
         Log.v("space", "space is " + querySpace());
         Log.v("yaaa", "directory");
 
-        ActivityResultLauncher<Uri> mTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
-            Log.v("image", "size: " + photo.length());
+        ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
+            if (result) {
+                Log.v("image", "size: " + photo.length());
+            }
+            else{Log.v("sad", "i cry");}
             //testDirectory();
             return;
         });
-        ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+        ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
                     @Override
                     public void onActivityResult(Uri result) {
                         return;
                     }
                 });
+        //ActivityResultLauncher<String> needPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                //});
+        //needPermission.launch(Manifest.permission.CAMERA);
 
 
         Uri photo_uri = FileProvider.getUriForFile(getApplicationContext(), "com.example.record_receipts", photo);
@@ -60,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         Button take_photo = findViewById(R.id.activity_main_take_button);
         take_photo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mTakePicture.launch(photo_uri);
+                takePicture.launch(photo_uri);
             }
         });
 
@@ -68,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         upload_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGetContent.launch("image/*");
+                getContent.launch("image/*");
             }
         });
     }
@@ -115,5 +123,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Files", "FileName:" + files[i].getName());
         }
     }
+
+
 
         }
