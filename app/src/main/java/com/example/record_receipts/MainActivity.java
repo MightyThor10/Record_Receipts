@@ -43,13 +43,12 @@ public class MainActivity extends AppCompatActivity {
         Log.v("space", "space is " + querySpace());
         Log.v("yaaa", "directory");
 
-        ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
-            if (result) {
-                Log.v("image", "size: " + photo.length());
+        ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(),new ActivityResultCallback<Boolean>() {
+            @Override
+            public void onActivityResult(Boolean result) {
+                if (result) Log.v("", "yay");
+                else Log.v("", "fuck");
             }
-            else{Log.v("sad", "i cry");}
-            //testDirectory();
-            return;
         });
         ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
                     @Override
