@@ -38,30 +38,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        File photo = createImageFile();
+        makeDirectories();
+        File photo = null;
+        try {
+            photo = createImageFile();
+        }
+         catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.v("", "getPath(): " + photo.getPath());
+        Log.v("", "exists:" + photo.exists());
+        Uri photo_uri = FileProvider.getUriForFile(getApplicationContext(), "com.example.record_receipts.provider", photo);
 
-        Log.v("space", "space is " + querySpace());
-        Log.v("yaaa", "directory");
-
-        ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(),new ActivityResultCallback<Boolean>() {
-            @Override
-            public void onActivityResult(Boolean result) {
-                if (result) Log.v("", "yay");
-                else Log.v("", "fuck");
-            }
+        ActivityResultLauncher<Uri> takePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
+            Log.v(" ", result.toString());
+            Log.v("uri", photo_uri.toString());
         });
-        ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri result) {
-                        return;
-                    }
-                });
+
         //ActivityResultLauncher<String> needPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                //});
+        //});
         //needPermission.launch(Manifest.permission.CAMERA);
 
 
-        Uri photo_uri = FileProvider.getUriForFile(getApplicationContext(), "com.example.record_receipts", photo);
         Log.v("image", "toString" + photo_uri.toString());
         Log.v("image", "getPath" + photo_uri.getPath());
         Button take_photo = findViewById(R.id.activity_main_take_button);
@@ -71,58 +69,72 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button upload_photo = findViewById(R.id.activity_main_upload_button);
-        upload_photo.setOnClickListener(new View.OnClickListener() {
-            @Override
+        Button upl = findViewById(R.id.activity_main_upload_button);
+        upl.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                getContent.launch("image/*");
+                testDirectory("");
             }
         });
+
     }
 
-    private File createImageFile(){
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File imagePath = new File(getApplicationContext().getFilesDir(), "temp");
-        File image = new File(imagePath, imageFileName+".jpg");
-        //File image = null;
-        //image = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), imageFileName);
-        currentPhotoPath = image.getAbsolutePath();
-        Log.v("image", currentPhotoPath);
-        return image;
+        private File createImageFile () throws IOException {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "_" + timeStamp;
+            File imagePath = new File(getApplicationContext().getFilesDir(), "temp");
+            //imagePath.mkdir();
+            Log.v("", "path exists: " + imagePath.exists());
+            File photo = File.createTempFile("JPEG_", imageFileName + ".jpg", imagePath);
+            Log.v("", "imagePath: " + imagePath);
+            Log.v(" ", "newFilepath: " + photo.getPath());
+            return photo;
+        }
+
+        private long querySpace () {
+            long availableBytes = 0;
+            StorageManager storageManager =
+                    getApplicationContext().getSystemService(StorageManager.class);
+            UUID appSpecificInternalDirUuid = null;
+            try {
+                appSpecificInternalDirUuid = storageManager.getUuidForPath(getFilesDir());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                availableBytes =
+                        storageManager.getAllocatableBytes(appSpecificInternalDirUuid);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return availableBytes;
+        }
+
+        private void makeDirectories(){
+            File temp = new File(getApplicationContext().getFilesDir(), "temp");
+            temp.mkdir();
+            File gas = new File(getApplicationContext().getFilesDir(), "gas");
+            gas.mkdir();
+            File grocery = new File(getApplicationContext().getFilesDir(), "grocery");
+            grocery.mkdir();
+            File dining = new File(getApplicationContext().getFilesDir(), "dining");
+            dining.mkdir();
+            File drug_store = new File(getApplicationContext().getFilesDir(), "drug_store");
+            drug_store.mkdir();
+            File entertainment = new File(getApplicationContext().getFilesDir(), "entertainment");
+            entertainment.mkdir();
+        }
+
+        private void testDirectory (String dir) {
+            File imagePath = new File(getApplicationContext().getFilesDir(),dir);
+            Log.d("Files", "Path: " + imagePath);
+            File directory = new File(imagePath,"");
+            File[] files = directory.listFiles();
+            Log.d("Files", "Size: " + files.length);
+            for (int i = 0; i < files.length; i++) {
+                Log.d("Files", "FileName:" + files[i].getName());
+               // Log.d("Files", "Size: " + files[i].getTotalSpace());
+            }
+
+        }
     }
 
-    private long querySpace() {
-        long availableBytes =0;
-        StorageManager storageManager =
-                getApplicationContext().getSystemService(StorageManager.class);
-        UUID appSpecificInternalDirUuid = null;
-        try {
-            appSpecificInternalDirUuid = storageManager.getUuidForPath(getFilesDir());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            availableBytes =
-                    storageManager.getAllocatableBytes(appSpecificInternalDirUuid);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return availableBytes;
-    }
-
-    private void testDirectory(){
-        String imagePath = new File(getApplicationContext().getFilesDir(), "temp").toString();
-        Log.d("Files", "Path: " + imagePath);
-        File directory = new File(imagePath);
-        File[] files = directory.listFiles();
-        Log.d("Files", "Size: "+ files.length);
-        for (int i = 0; i < files.length; i++)
-        {
-            Log.d("Files", "FileName:" + files[i].getName());
-        }
-    }
-
-
-
-        }
