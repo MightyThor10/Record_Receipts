@@ -7,38 +7,36 @@
 
 
     <EditText
-        android:id="@+id/first_screen_create_password"
+        android:id="@+id/first_screen_ask_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="232dp"
         android:ems="10"
-        android:hint="Enter a strong password"
+        android:hint="Enter your password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/first_screen_confirm_password"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/first_screen_submit_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.823" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/first_screen_confirm_password"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/first_screen_submit_password"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="216dp"
-        android:ems="10"
-        android:hint="Confirm password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/first_screen_create_password_button"
+        android:layout_marginBottom="22dp"
+        android:text="Log in"
+        app:layout_constraintBottom_toTopOf="@+id/first_screen_forgot_password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/first_screen_create_password_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/first_screen_forgot_password"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
-        android:text="Create password"
+        android:layout_marginBottom="220dp"
+        android:text="Forgot Password"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
