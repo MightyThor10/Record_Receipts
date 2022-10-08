@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <files-path name="temp" path="temp" />
+    <files-path name="gas" path="gas" />
+    <files-path name="grocery" path="grocery" />
+    <files-path name="dining" path="dining" />
+    <files-path name="drug_store" path="drug_store" />
+    <files-path name="entertainment" path="entertainment" />
+</paths>
