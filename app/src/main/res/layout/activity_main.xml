@@ -87,19 +87,8 @@
         android:id="@+id/activity_main_drug_store_button"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="248dp"
         android:text="Drug Store"
-        app:layout_constraintBottom_toTopOf="@+id/activity_main_miscellaneous_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/activity_main_miscellaneous_button"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="184dp"
-        android:text="Miscellaneous"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"

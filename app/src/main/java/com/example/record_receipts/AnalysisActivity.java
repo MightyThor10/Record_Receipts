@@ -1,7 +1,10 @@
 package com.example.record_receipts;
+
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,9 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -21,8 +25,12 @@ import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class AnalysisActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -31,15 +39,17 @@ public class AnalysisActivity extends AppCompatActivity implements AdapterView.O
     EditText editText;
     Button saveButton;
     ImageView imageView;
-    String[] Categories = { "Gas", "Grocery",
-            "Drug Stores", "Dining",
-            "Other" };
+    String[] Categories = {"Gas", "Grocery",
+            "Drug Store", "Dining",
+            "Entertainment"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.analysis_screen);
         File path = getFilesDir();
+        Uri photoURI = Uri.parse(getIntent().getStringExtra("photoURI"));
 
         // Set up spinner categories
         spinner = findViewById(R.id.spinner);
@@ -56,75 +66,102 @@ public class AnalysisActivity extends AppCompatActivity implements AdapterView.O
 
         editText = findViewById(R.id.edit_text);
         imageView = findViewById(R.id.imageView);
-        imageView.setImageResource(R.drawable.img_4064);
+        imageView.setImageURI(photoURI);
 
-        detect_text();
+        try {
+            detect_text(photoURI);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // here is when the save button is clicked. we should send the value of the total to shared pref for total.
-                // also save/move this the photo from temp to the the category that is being selected in the spinner.
-                // right now I am just saving the category and the total in a txt file but we can change it.
-                String fileName = "image_data.txt";
-                String content = String.valueOf(editText.getText()) + "\n" + String.valueOf(spinner.getSelectedItem().toString());
-                try {
-                    FileOutputStream writer = new FileOutputStream(new File(path, fileName));
-                    writer.write(content.getBytes());
-                    writer.close();
-                    Toast.makeText(getApplicationContext(), "Content written at " + path, Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
+
+                // Prepare display string for path string
+                String category = spinner.getSelectedItem().toString().toLowerCase().replace(' ', '_');
+
+                // Find new file name
+                int photoNumber = 0;
+                File newFile;
+                do {
+                    photoNumber++;
+                    newFile = new File(getApplicationContext().getFilesDir() + "/" + category + "/" + category + photoNumber + ".jpg");
+                }
+                while (newFile.exists());
+
+                // Move pic to appropriate directory
+                try (FileOutputStream outputStream = new FileOutputStream(newFile, false)) {
+                    InputStream inputStream = getContentResolver().openInputStream(photoURI);
+                    int read;
+                    byte[] bytes = new byte[8192];
+                    while ((read = inputStream.read(bytes)) != -1) {
+                        outputStream.write(bytes, 0, read);
+                    }
+
+                    // Return to main activity
+                    Intent startMain = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(startMain);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
     }
 
-    private void detect_text() {
+    private void detect_text(Uri photoURI) throws IOException {
         TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.img_4064);
+
+        // Get image from temp file via URI
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoURI);
         InputImage image = InputImage.fromBitmap(bitmap, 0);
 
         Task<Text> result = recognizer.process(image)
-                        .addOnSuccessListener(new OnSuccessListener<Text>() {
-                            @Override
-                            public void onSuccess(Text visionText) {
-                                String resultText = visionText.getText();
-                                List<Text.TextBlock> blocks = visionText.getTextBlocks();
-                                Boolean total_flag = false;
-                                String total = "";
-                                for (Text.TextBlock block : visionText.getTextBlocks()) {
-                                    String txt = block.getText();
-                                    Log.d("this block: ", txt);
-                                    if (txt.equalsIgnoreCase("total") && resultText.toLowerCase().contains("grand total") == false) {
-                                        total = txt;
-                                        total_flag = true;
-                                        continue;
-                                    } else if (txt.toLowerCase().contains("grand total")){
-                                        total = txt;
-                                        total_flag = true;
-                                        continue;
-                                    }
-                                    if (total_flag == true) {
-                                        editText.setText(total + " in this receipt is: $" + txt);
-                                        break;
-                                    }
-                                }
+                .addOnSuccessListener(new OnSuccessListener<Text>() {
+                    @Override
+                    public void onSuccess(Text visionText) {
+                        String resultText = visionText.getText();
+                        List<Text.TextBlock> blocks = visionText.getTextBlocks();
+                        Boolean total_flag = false;
+                        String total = "";
+
+                        // Search for total $
+                        for (Text.TextBlock block : visionText.getTextBlocks()) {
+                            String txt = block.getText();
+                            Log.d("this block: ", txt);
+                            if (txt.equalsIgnoreCase("total") && resultText.toLowerCase().contains("grand total") == false) {
+                                total = txt;
+                                total_flag = true;
+                                continue;
+                            } else if (txt.toLowerCase().contains("$")) {
+                                total = txt;
+                                total_flag = true;
+                                continue;
                             }
-                        })
-                        .addOnFailureListener(
-                                new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.d("Tag failed", "Processing image failed");
-                                    }
-                                });
+                            if (total_flag == true) {
+                                // TODO Store runnning total in SharedPref
+                                editText.setText(total + " in this receipt is: $" + txt);
+                                break;
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("Tag failed", "Processing image failed");
+                            }
+                        });
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
     }
+
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
     }

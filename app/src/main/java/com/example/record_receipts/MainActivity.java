@@ -1,5 +1,6 @@
 package com.example.record_receipts;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
             Log.v("uri", photo_uri.toString());
 
             // Start OCR Activity here
+            Intent startOCR = new Intent(getApplicationContext(), AnalysisActivity.class);
+            startOCR.putExtra("photoURI", photo_uri.toString());
+            startActivity(startOCR);
         });
 
 
@@ -66,6 +70,40 @@ public class MainActivity extends AppCompatActivity {
                 testDirectory("");
             }
         });
+
+        Button dining = findViewById(R.id.activity_main_dining_button);
+        Button drugStore = findViewById(R.id.activity_main_drug_store_button);
+        Button entertain = findViewById(R.id.activity_main_entertainment_button);
+        Button gas = findViewById(R.id.activity_main_gas_button);
+        Button grocery = findViewById(R.id.activity_main_grocery_button);
+
+        dining.setOnClickListener(view -> {
+            moveToSub("dining");
+        });
+
+        drugStore.setOnClickListener(view -> {
+            moveToSub("drug_store");
+        });
+
+        entertain.setOnClickListener(view -> {
+            moveToSub("entertainment");
+        });
+
+        gas.setOnClickListener(view -> {
+            moveToSub("gas");
+        });
+
+        grocery.setOnClickListener(view -> {
+            moveToSub("grocery");
+        });
+
+    }
+    // Move to SubActivity, showing list of items in category
+    private void moveToSub(String subDir)
+    {
+        Intent intent = new Intent(getApplicationContext(), SubActivity.class);
+        intent.putExtra("category", subDir);
+        startActivity(intent);
     }
 
     // Return empty jpg file for picture to be inserted

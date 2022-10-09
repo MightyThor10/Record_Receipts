@@ -76,9 +76,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
         });
-
+        // Equivalent to clearing app storage and cache from Android Settings
+        // TODO Create confirmation dialog
         forgotPasswordButton.setOnClickListener(view -> {
-
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
                 ((ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE))
                         .clearApplicationUserData();

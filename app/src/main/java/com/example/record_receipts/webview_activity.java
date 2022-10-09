@@ -41,7 +41,10 @@ public class webview_activity extends Activity {
 
     private void detect_text() {
         TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.img_4064);
+
+        // Get image from passed in path
+        String path = getIntent().getStringExtra("path");
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
         InputImage image = InputImage.fromBitmap(bitmap, 0);
 
         Task<Text> result = recognizer.process(image)
@@ -50,12 +53,14 @@ public class webview_activity extends Activity {
                     public void onSuccess(Text visionText) {
                         String resultText = visionText.getText();
                         List<Text.TextBlock> blocks = visionText.getTextBlocks();
+
+                        // Get the first text block and insert it into a google search via webview
                         shopName = String.valueOf(blocks.get(0).getText());
                         title.setText("Searching for " + shopName + " near you");
                         myWebView.loadUrl("https://www.google.com/search?q="+shopName+" near+me");
                         myWebView.getSettings().setJavaScriptEnabled(false);
                         myWebView.setWebViewClient(new WebViewClient());
-                        Log.d("something", shopName);
+                        Log.d("Searched text, 1st text block", shopName);
                     }
                 })
                 .addOnFailureListener(
