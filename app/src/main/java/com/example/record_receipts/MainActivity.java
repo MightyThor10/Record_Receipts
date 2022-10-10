@@ -1,11 +1,15 @@
 package com.example.record_receipts;
 
+import static java.lang.Character.DECIMAL_DIGIT_NUMBER;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -24,6 +28,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor myEditor = sharedPreferences.edit();
+
+        // if statement required so Intent handling only comes from Analysis Activity
+        if (getIntent().hasExtra("total")) {
+
+            String totalValue = "";
+            for (int i =0; i < getIntent().getStringExtra("total").length(); i++){
+
+                if (getIntent().getStringExtra("total").charAt(i) == '$'){
+
+                    totalValue += getIntent().getStringExtra("total").substring(i+1);
+                }
+            }
+
+            String category = getIntent().getStringExtra("category");
+            String directory = category + "Total";
+
+            Float cur = sharedPreferences.getFloat(directory, 0.00F);
+            Float totalFloat = Float.parseFloat(totalValue) + cur;
+            myEditor.putFloat(directory, totalFloat);
+
+            myEditor.commit();
+        }
         // Create photo folders
         makeDirectories();
 
@@ -63,19 +91,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Does no true functionality right now
-        Button upl = findViewById(R.id.activity_main_upload_button);
-        upl.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                testDirectory("");
-            }
-        });
-
         Button dining = findViewById(R.id.activity_main_dining_button);
         Button drugStore = findViewById(R.id.activity_main_drug_store_button);
         Button entertain = findViewById(R.id.activity_main_entertainment_button);
         Button gas = findViewById(R.id.activity_main_gas_button);
         Button grocery = findViewById(R.id.activity_main_grocery_button);
+        TextView gasText = findViewById(R.id.gas_total);
+        TextView groceryText = findViewById(R.id.grocery_total);
+        TextView diningText = findViewById(R.id.dining_total);
+        TextView entertainmentText = findViewById(R.id.entertainment_total);
+        TextView drugStoreText = findViewById(R.id.drug_store_total);
 
         dining.setOnClickListener(view -> {
             moveToSub("dining");
@@ -96,6 +121,14 @@ public class MainActivity extends AppCompatActivity {
         grocery.setOnClickListener(view -> {
             moveToSub("grocery");
         });
+
+        // set text boxes based on running totals stored in SharedPreferences
+        gasText.setText(String.valueOf(sharedPreferences.getFloat("gasTotal", 0.00F)));
+        Log.v("",String.valueOf(sharedPreferences.getFloat("gasTotal", 0.00F)));
+        diningText.setText(String.valueOf(sharedPreferences.getFloat("diningTotal", 0.00F)));
+        groceryText.setText(String.valueOf(sharedPreferences.getFloat("groceryTotal", 0.00F)));
+        entertainmentText.setText(String.valueOf(sharedPreferences.getFloat("entertainmentTotal", 0.00F)));
+        drugStoreText.setText(String.valueOf(sharedPreferences.getFloat("drug_storeTotal", 0.00F)));
 
     }
     // Move to SubActivity, showing list of items in category

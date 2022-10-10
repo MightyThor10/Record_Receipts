@@ -102,6 +102,8 @@ public class AnalysisActivity extends AppCompatActivity implements AdapterView.O
 
                     // Return to main activity
                     Intent startMain = new Intent(getApplicationContext(), MainActivity.class);
+                    startMain.putExtra("total", editText.getText().toString());
+                    startMain.putExtra("category", category.toString());
                     startActivity(startMain);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
