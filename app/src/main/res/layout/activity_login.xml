@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/light_blue">
 
 
     <EditText
@@ -13,6 +14,8 @@
         android:layout_marginTop="232dp"
         android:ems="10"
         android:hint="Enter your password"
+        android:background="@color/cool_blue"
+        android:textColorHint="@color/white"
         android:inputType="textPassword"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/first_screen_submit_password"
@@ -21,21 +24,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/first_screen_submit_password"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="22dp"
+        android:background="@drawable/button_background"
+        android:backgroundTint="@color/light_pink"
+        android:textColor="@color/white"
         android:text="Log in"
         app:layout_constraintBottom_toTopOf="@+id/first_screen_forgot_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/first_screen_forgot_password"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="220dp"
+        android:background="@drawable/button_background"
+        android:backgroundTint="@color/light_pink"
+        android:textColor="@color/white"
         android:text="Forgot Password"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

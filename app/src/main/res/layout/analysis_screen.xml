@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AnalysisActivity">
+    tools:context=".AnalysisActivity"
+    android:background="@color/light_blue">
 
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="363dp"
+        android:backgroundTint="@color/cool_blue"
         android:layout_height="167dp"
         android:layout_marginBottom="84dp"
         android:background="@drawable/stroke_bg"
@@ -21,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Receipt details here"
+            android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +35,7 @@
 
     <ImageView
         android:id="@+id/imageView"
+        android:background="@color/cool_blue"
         android:layout_width="370dp"
         android:layout_height="399dp"
         android:layout_marginTop="296dp"
@@ -41,26 +45,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="18dp"
+        android:background="@drawable/button_background"
         android:text="Save"
+        android:textColor="@color/white"
+
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintStart_toEndOf="@+id/spinner"
         app:layout_constraintTop_toBottomOf="@+id/scroll_view"
-        app:layout_constraintVertical_bias="0.166" />
+        app:layout_constraintVertical_bias="0.055" />
 
     <TextView
         android:id="@+id/take_category"
-        android:layout_width="69dp"
-        android:layout_height="34dp"
+        android:layout_width="73dp"
+        android:layout_height="31dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="33dp"
         android:layout_marginBottom="34dp"
         android:text="Category:"
+        android:background="@color/cool_blue"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,10 +78,13 @@
 
     <Spinner
         android:id="@+id/spinner"
+        android:background="@color/cool_blue"
+
         android:layout_width="147dp"
         android:layout_height="33dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="32dp"
+
         app:layout_constraintStart_toEndOf="@+id/take_category"
         app:layout_constraintTop_toBottomOf="@+id/scroll_view" />
 

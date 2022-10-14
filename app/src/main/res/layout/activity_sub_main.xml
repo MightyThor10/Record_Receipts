@@ -4,16 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:weightSum="100"
+    android:orientation="vertical"
     tools:context=".SubActivity"
-    android:id="@+id/activity_sub_linear_layout">
+    android:id="@+id/activity_sub_linear_layout"
+    android:background="@color/light_blue">
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/recycler_main"
-        android:layout_margin="8dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_weight="90"></androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/returnBtn"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_margin="15dp"
+        android:layout_weight="10"
+        android:background="@drawable/button_background"
+        android:backgroundTint="@color/light_pink"
+        android:textColor="@color/white"
+        android:text="Return" />
 
 
 </LinearLayout>
