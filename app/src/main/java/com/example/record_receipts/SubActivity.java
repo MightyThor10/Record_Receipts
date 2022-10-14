@@ -3,6 +3,7 @@ package com.example.record_receipts;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ public class SubActivity extends AppCompatActivity implements SelectListener{
     List<MyModel> myModelList;
     CustomAdapter customAdapter;
     LinearLayout linearLayout;
+    Button returnBtn;
     String path;
 
     @Override
@@ -29,6 +31,10 @@ public class SubActivity extends AppCompatActivity implements SelectListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_main);
         linearLayout = findViewById(R.id.activity_sub_linear_layout);
+        returnBtn = findViewById(R.id.returnBtn);
+        returnBtn.setOnClickListener(view -> {
+            returnToMain("dining");
+        });
         displayItems();
 
         ItemTouchHelper helper = new ItemTouchHelper(callback);
@@ -83,4 +89,11 @@ public class SubActivity extends AppCompatActivity implements SelectListener{
             customAdapter.notifyDataSetChanged();
         }
     };
+
+    // Return to MainActivity, showing list of directories
+    private void returnToMain(String subDir)
+    {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
 }

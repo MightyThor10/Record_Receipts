@@ -2,4 +2,8 @@
     <string name="app_name">Record_Receipts</string>
     <string name="activity_main_title">Receipts</string>
     <string name="analysis_screen_title">Receipt Details</string>
+    <string name="go_back">No</string>
+    <string name="reset">Yes</string>
+    <string name="forgot_password">Are you sure?</string>
+    <string name="dialog_text">Are you sure you reset your password?</string>
 </resources>

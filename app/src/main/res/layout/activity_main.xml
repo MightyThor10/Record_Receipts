@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/light_blue">
 
     <TextView
         android:id="@+id/activity_main_title"
@@ -13,30 +14,34 @@
         android:layout_marginTop="28dp"
         android:fontFamily="sans-serif"
         android:text="@string/activity_main_title"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/activity_main_take_button"
-        android:layout_width="368dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Take Photo"
+        android:layout_width="380dp"
+        android:layout_height="170dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/camera"
+
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/activity_main_gas_button"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="77dp"
         android:layout_marginBottom="22dp"
         android:text="Gas"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/activity_main_dining_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.112"
@@ -44,45 +49,53 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_main_title"
         app:layout_constraintVertical_bias="1.0" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/activity_main_dining_button"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
+        android:textColor="@color/white"
+        android:background="@drawable/button_background"
         android:text="Dining"
         app:layout_constraintBottom_toTopOf="@+id/activity_main_grocery_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.112"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/activity_main_grocery_button"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
         android:text="Grocery"
         app:layout_constraintBottom_toTopOf="@+id/activity_main_entertainment_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.112"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/activity_main_entertainment_button"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
         android:text="Entertainment"
         app:layout_constraintBottom_toTopOf="@+id/activity_main_drug_store_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.112"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/activity_main_drug_store_button"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="248dp"
+        android:background="@drawable/button_background"
         android:text="Drug Store"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.112"
@@ -94,6 +107,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="260dp"
+        android:textColor="@color/white"
         android:text="TextView"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -105,6 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="336dp"
+        android:textColor="@color/white"
         android:text="TextView"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -116,6 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="412dp"
+        android:textColor="@color/white"
         android:text="TextView"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -127,6 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="484dp"
+        android:textColor="@color/white"
         android:text="TextView"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -138,10 +155,24 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="552dp"
+        android:textColor="@color/white"
         android:text="TextView"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="96dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="39dp"
+        android:textSize="18dp"
+        android:text="Take Photo"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/activity_main_take_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_main_drug_store_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
