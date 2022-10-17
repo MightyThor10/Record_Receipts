@@ -32,7 +32,7 @@
         </provider>
         <activity
             android:name=".MainActivity"
-            android:exported="true"
+            android:exported="false"
             android:launchMode="standard">
         </activity>
         <activity
@@ -46,24 +46,21 @@
         </activity>
         <activity
             android:name=".webview_activity"
-            android:exported="true">
+            android:exported="false">
         </activity>
 
         <activity
             android:name=".SubActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
 
         <activity
             android:name=".AnalysisActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <activity
             android:name=".CreatePassword"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+            android:exported="false">
         </activity>
         <activity
             android:name=".LoginActivity"
