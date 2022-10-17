@@ -77,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (password.getText().toString().equals(unencryptedString)) {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Wrong Password!", Toast.LENGTH_SHORT).show();
                 }
 
             } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException | IOException | InvalidKeyException | UnrecoverableEntryException | NoSuchPaddingException e) {
