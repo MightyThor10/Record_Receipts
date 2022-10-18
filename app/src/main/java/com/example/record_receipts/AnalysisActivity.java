@@ -138,7 +138,7 @@ public class AnalysisActivity extends AppCompatActivity implements AdapterView.O
                                 total = txt;
                                 total_flag = true;
                                 continue;
-                            } else if (txt.toLowerCase().contains("$")) {
+                            } else if (txt.toLowerCase().contains("grand total")) {
                                 total = txt;
                                 total_flag = true;
                                 continue;

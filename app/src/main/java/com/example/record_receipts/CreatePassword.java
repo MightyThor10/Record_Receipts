@@ -8,6 +8,7 @@ import android.security.keystore.KeyProperties;
 import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -76,6 +77,8 @@ public class CreatePassword extends AppCompatActivity {
                 } catch (NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | InvalidAlgorithmParameterException | NoSuchProviderException e) {
                     e.printStackTrace();
                 }
+            } else {
+                Toast.makeText(getApplicationContext(), "Passwords Don't Match!", Toast.LENGTH_SHORT).show();
             }
         });
 
