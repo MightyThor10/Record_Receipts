@@ -51,6 +51,8 @@ public class AnalysisActivity extends AppCompatActivity implements AdapterView.O
         File path = getFilesDir();
         Uri photoURI = Uri.parse(getIntent().getStringExtra("photoURI"));
 
+
+
         // Set up spinner categories
         spinner = findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
@@ -65,6 +67,15 @@ public class AnalysisActivity extends AppCompatActivity implements AdapterView.O
         spinner.setAdapter(ad);
 
         editText = findViewById(R.id.edit_text);
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+                if (hasFocus) {
+                    editText.setError("Put a $ before the amount and no text after the dollar value!");
+                }
+            }
+        });
         imageView = findViewById(R.id.imageView);
         imageView.setImageURI(photoURI);
 
