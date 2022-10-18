@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
             String directory = category + "Total";
 
             Float cur = sharedPreferences.getFloat(directory, 0.00F);
-            Float totalFloat = Float.parseFloat(totalValue) + cur;
+            Float totalFloat = 0.0F;
+            if (totalValue != "")
+                totalFloat = Float.parseFloat(totalValue) + cur;
             myEditor.putFloat(directory, totalFloat);
 
             myEditor.commit();
